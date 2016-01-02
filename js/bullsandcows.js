@@ -18,7 +18,7 @@ var BullsAndCows = function () {
 
 BullsAndCows.prototype.init = function(){
 	while (true) {
-		var number = (1000 + parseInt(Math.random()*9999))+"";
+		var number = (1000 + parseInt(Math.random()*9000))+"";
 		if (hasUniqueDigitsAndHasNoZero(number)){
 			this.number = number;
 			break;
