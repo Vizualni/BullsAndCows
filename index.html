@@ -1,77 +1,49 @@
 <html>
 <head>
+</head>
+<body>
+	<div id="bullsandcows">
+		<input type="text" id="numberValue" /> <button id="clickOnMe">Enter number</button>
+		<ul id="numbers">
+		</ul>
+	</div>
+
+	<script type="text/javascript" src="js/bullsandcows.js"></script>
 	<script type="text/javascript">
 
 	(function(){
 
-		function hasUniqueDigitsAndHasNoZero(number){
-		var digits = {};
-		for(var i in number){
-			if (number[i]=="0" || digits[number[i]]!==undefined){
-				return false;
-			}
-			digits[number[i]] = 1;
-		}
-		return true;
-		}
-	
-		var BullsAndCows = function () {
-			this.init();
-		};
-
-		BullsAndCows.prototype.init = function(){
-			while (true) {
-				var number = (1000 + parseInt(Math.random()*9000))+"";
-				if (hasUniqueDigitsAndHasNoZero(number)){
-					this.number = number;
-					break;
-				}
-			}
-			console.log(this.number);
-		};
-
-		BullsAndCows.prototype.enterNumber = function(number) {
-			if (hasUniqueDigitsAndHasNoZero(number)==false) {
-				return false;
-			}
-
-			if (number == this.number) {
-				this.onWin();
-				return true;
-			}
-
-			var status = {
-				b: 0,
-				c: 0,
-			};
-
-			for (var i in number) {
-				// checking number at *i-th* position is bull or cow
-
-				if (number[i]==this.number[i]) {
-					// bull
-					status.b++;
-				}else if (this.number.indexOf(number[i])>=0) {
-					// cow
-					status.c++;
-				}
-			}
-
-			return status;
-		}
-
+		var button = document.querySelector("#clickOnMe");
 		var game = new BullsAndCows();
-		window.game = game;
+		var ul = document.querySelector("#numbers");
 
-		game.onWin = function(){
-			alert("bravo!");
+		button.onclick = function() {
+			var numberField = document.querySelector("#numberValue");
+			var number = numberField.value;
+			var status = game.enterNumber(number);
+			if (status === true) {
+				return;
+			} else if (status === false) {
+				return alert("Number must have unique character and must be 4 digit number.");
+			}
+			addTextToUL(ul, "Number " + number + ". Bulls: "+ status.b + ", Cows: "+status.c);
 		};
+
+		
+		game.onWin = function(){
+			addTextToUL(ul, "You won! " + game.number);
+			button.disabled = true;
+		};
+
+		function addTextToUL(ul, text) {
+			var li = document.createElement("li");
+			li.appendChild(document.createTextNode(text));
+			ul.appendChild(li);
+		}
+
 
 	})();
 
 	</script>
-</head>
-<body>
-	<div id="bullsandcows"></div>
 </body>
 </html>
