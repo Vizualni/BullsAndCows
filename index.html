@@ -1,0 +1,77 @@
+<html>
+<head>
+	<script type="text/javascript">
+
+	(function(){
+
+		function hasUniqueDigitsAndHasNoZero(number){
+		var digits = {};
+		for(var i in number){
+			if (number[i]=="0" || digits[number[i]]!==undefined){
+				return false;
+			}
+			digits[number[i]] = 1;
+		}
+		return true;
+		}
+	
+		var BullsAndCows = function () {
+			this.init();
+		};
+
+		BullsAndCows.prototype.init = function(){
+			while (true) {
+				var number = (1000 + parseInt(Math.random()*9000))+"";
+				if (hasUniqueDigitsAndHasNoZero(number)){
+					this.number = number;
+					break;
+				}
+			}
+			console.log(this.number);
+		};
+
+		BullsAndCows.prototype.enterNumber = function(number) {
+			if (hasUniqueDigitsAndHasNoZero(number)==false) {
+				return false;
+			}
+
+			if (number == this.number) {
+				this.onWin();
+				return true;
+			}
+
+			var status = {
+				b: 0,
+				c: 0,
+			};
+
+			for (var i in number) {
+				// checking number at *i-th* position is bull or cow
+
+				if (number[i]==this.number[i]) {
+					// bull
+					status.b++;
+				}else if (this.number.indexOf(number[i])>=0) {
+					// cow
+					status.c++;
+				}
+			}
+
+			return status;
+		}
+
+		var game = new BullsAndCows();
+		window.game = game;
+
+		game.onWin = function(){
+			alert("bravo!");
+		};
+
+	})();
+
+	</script>
+</head>
+<body>
+	<div id="bullsandcows"></div>
+</body>
+</html>
